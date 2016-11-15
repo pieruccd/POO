@@ -99,6 +99,18 @@ Le diagramme UML correspondant du package Robot est le suivant \\
 \section{Autres Packages}
 Il n'y a pas vraiment de choix de conception à faire pour les autres packages, la partie 1 est très guidée. 
 
+
+\chapter{Troisième partie : le plus court chemin}
+Pour trouver le plus court chemin, notre algorithme commence par initialiser la distance entre le robot et l'incendie par une valeur maximale. \\
+
+Ensuite, il teste dans une boucle sur les cases accessibles laquelle est la plus proche. Si elle permet de diminuer la distance entre le robot et la destination alors on met la nouvelle distance dans la variable dist et on continue. \\
+
+Dans le cas où la variable 'dist' n'a pas changer de valeur, celà indique que le robot ne trouve jamais une case où il peut se déplacer. On affiche alors le message indiquant que le robot est bloqué.
+
+
+
+\chapter{Quatrième partie : Stratégie d'intervention}
+On a opté pour la stratégie élémentaire. Il s'agit de parcourir dans 2 boucles imbriqués les incendies qui sont sur la carte, et de parcourir pour chaque incendie la liste des robots pour voir lequel est disponible
 \end{document}
 
 
