@@ -48,7 +48,9 @@ public class Chemin {
         System.out.println("CALCUL ...");
         while ((robotCour.getPostion().getLigne() != destination.getLigne() || robotCour.getColonne() != destination.getColonne())) {
             dist = Double.MAX_VALUE;
+            //System.out.println("avant for");
             for (EnumDirection dir : EnumDirection.values()) {
+                //System.out.println("après for");
                 if (robotCour.deplacementPossible(dir)) {
                     if (distance(robotCour.getCarte().getVoisin(robotCour.getPostion(), dir), destination) < dist) {
                         dist = distance(robotCour.getCarte().getVoisin(robotCour.getPostion(), dir), destination);
@@ -60,6 +62,7 @@ public class Chemin {
                     return;
                 }
             }
+            //System.out.println("Fin For");
             /* On choisit le meilleur chemin local */
             dateCour++;
             robotCour.deplacer(dirCour);
@@ -67,6 +70,7 @@ public class Chemin {
             this.chemin.add(cheminElementaire);
             this.dateDebut = dateCour;
         }
+        System.out.println("Fin While");
     }
 
 }

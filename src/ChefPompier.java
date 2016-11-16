@@ -22,6 +22,7 @@ public class ChefPompier {
     int dateCour;
 
     public void setCheminall(ArrayList<Evenement> cheminall) {
+        
         this.cheminall = cheminall;
     }
 
@@ -36,8 +37,11 @@ public class ChefPompier {
     public ChefPompier(ArrayList<Incendie> incendies, ArrayList<Robot> robots, Carte map, int dateDebut) {
         this.dateCour = dateDebut;
         this.map = map;
+        this.robots = new ArrayList<Robot>();
         this.robots = robots;
+        this.incendies = new ArrayList<Incendie>();
         this.incendies = incendies;
+        this.cheminall = new ArrayList<Evenement>();
     }
 
     public ArrayList<Evenement> getCheminall() {
@@ -76,6 +80,7 @@ public class ChefPompier {
         for(Incendie inc : this.incendies) {
             for(Robot rob : this.robots) {
                 if (! rob.IsBusy()){
+                    System.out.println("Position Robot : " + robots.indexOf(rob));
                    chemin.calculerChemin(rob, rob.getPostion(), inc.getCase(), robots.indexOf(rob));
                    if (!chemin.getChemin().isEmpty()) {
                        rob.setBusy(true);
@@ -92,6 +97,7 @@ public class ChefPompier {
                 
             }
         }
+        System.out.println("BONJOUUR");
     } 
     
     
