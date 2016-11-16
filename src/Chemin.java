@@ -65,6 +65,7 @@ public class Chemin {
             robotCour.deplacer(dirCour);
             EvenementDeplacementRobot cheminElementaire = new EvenementDeplacementRobot(dateCour, robot, dirCour, indexRobot);
             this.chemin.add(cheminElementaire);
+            this.dateDebut = dateCour;
         }
     }
 
