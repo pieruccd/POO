@@ -46,25 +46,29 @@ public class Chemin {
         Robot robotCour = robot.copy();
         robotCour.setPosition(depart.getLigne(),depart.getColonne());
         System.out.println("CALCUL ...");
+        System.out.println("Incendie ligne : " + destination.getLigne() + " Incendie colonne : " + destination.getColonne());
+        Case prec = new Case(0,0);
+                System.out.println("Index Robot fdp :" + indexRobot);        
         while ((robotCour.getPostion().getLigne() != destination.getLigne() || robotCour.getColonne() != destination.getColonne())) {
             dist = Double.MAX_VALUE;
-            //System.out.println("avant for");
             for (EnumDirection dir : EnumDirection.values()) {
-                //System.out.println("après for");
+                System.out.println(dir);
                 if (robotCour.deplacementPossible(dir)) {
-                    if (distance(robotCour.getCarte().getVoisin(robotCour.getPostion(), dir), destination) < dist) {
+                    if ((distance(robotCour.getCarte().getVoisin(robotCour.getPostion(), dir), destination) < dist) && !robotCour.getCarte().getVoisin(robotCour.getPostion(), dir).issamecase(prec)) {
                         dist = distance(robotCour.getCarte().getVoisin(robotCour.getPostion(), dir), destination);
                         dirCour = dir;
                     }
                 }
+
                 if (dist == Double.MAX_VALUE) {
                     System.out.println("Le robot est bloqué !"); 
                     return;
                 }
             }
-            //System.out.println("Fin For");
+
             /* On choisit le meilleur chemin local */
             dateCour++;
+            prec = robotCour.getPostion();
             robotCour.deplacer(dirCour);
             EvenementDeplacementRobot cheminElementaire = new EvenementDeplacementRobot(dateCour, robot, dirCour, indexRobot);
             this.chemin.add(cheminElementaire);

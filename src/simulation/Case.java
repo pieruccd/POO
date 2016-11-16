@@ -12,6 +12,7 @@ public class Case implements Cloneable {
         this.colonne = colonne;
         this.nature = nature;
     }
+    
 
     public Case(int ligne, int colonne) {
         this.ligne = ligne;
@@ -49,6 +50,10 @@ public class Case implements Cloneable {
      */
     public void setNature(EnumNatureTerrain nature) {
         this.nature = nature;
+    }
+    
+    public boolean issamecase(Case un) {
+      return (this.ligne == un.getLigne() && this.colonne == un.getColonne());
     }
 
     @Override

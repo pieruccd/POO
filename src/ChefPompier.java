@@ -89,6 +89,7 @@ public class ChefPompier {
                             this.dateCour = chemin.getDateDebut();
                             this.cheminall.add(new EvenementDeverserEau(this.dateCour, inc, rob, incendies.indexOf(inc), robots.indexOf(rob)));
                             this.dateCour ++;
+                            break;
                        }
                     
                    }
