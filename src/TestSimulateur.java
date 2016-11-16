@@ -15,7 +15,7 @@ public class TestSimulateur {
         GUISimulator gui = new GUISimulator(1000, 1000, Color.BLACK);
 
         /*On charge les données de la simulation*/
-        DonneesSimulation testDonneesSimulation = new DonneesSimulation(" .." + "\\\\" + ".." + "\\\\" + "cartes" + "\\\\" + "carteSujet.map");
+        DonneesSimulation testDonneesSimulation = new DonneesSimulation("cartes" + "/" + "carteSujet.map");
 
         /* Scenario détaillé dans la partie 2 de l'énoncé (scénario 1) */
         EvenementDeplacementRobot testEvenement1 = new EvenementDeplacementRobot(0, testDonneesSimulation.getRobots().get(1), EnumDirection.NORD, 1);

@@ -11,6 +11,15 @@ abstract public class Robot {
     protected double vitesse;
     protected Carte carte;
     protected int quantitéEau;
+    protected boolean busy;
+
+    public void setBusy(boolean busy) {
+        this.busy = busy;
+    }
+    
+    public boolean IsBusy() {
+        return this.busy;
+    }
     
     public Case getPostion() {
         return carte.getCase(ligne, colonne);
