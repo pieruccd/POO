@@ -1,141 +1,58 @@
-% book example for classicthesis.sty
-\documentclass[
-  % Replace twoside with oneside if you are printing your thesis on a single side
-  % of the paper, or for viewing on screen.
-  %oneside,
-  oneside,
-  11pt, a4paper,
-  footinclude=true,
-  headinclude=true,
-  cleardoublepage=empty
-]{scrbook}
-%\usepackage{array}
-%\usepackage{lipsum}
-\usepackage[linedheaders,parts,pdfspacing]{classicthesis}
-\usepackage{amsmath}
-\usepackage{amsthm}
-\usepackage{hyperref}
-\usepackage{graphicx}
-\usepackage{listings}
-
-\usepackage{array}
-
+\documentclass{article}
 \usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{eurosym}
-\newcommand{\intervalle}[4]{\mathopen{#1}#2
- \mathclose{}\mathpunct{};#3
- \mathclose{#4}}
-\newcommand{\intervalleff}[2]{\intervalle{[}{#1}{#2}{]}}
-\newcommand{\intervalleof}[2]{\intervalle{]}{#1}{#2}{]}}
-\newcommand{\intervallefo}[2]{\intervalle{[}{#1}{#2}{[}}
-\newcommand{\intervalleoo}[2]{\intervalle{]}{#1}{#2}{[}}
+\usepackage{graphicx}
 
-\title{Simulation d’une équipe de robots pompiers - TP en temps Libre}
+\title{TPL POO : Robots}
 \author{Salah-Eddine Bariol Alaoui\\Majd Fariat\\Dimitri Pierucci}
+\date{November 2016}
 
 \begin{document}
 
 \maketitle
 
-%\include{FrontBackMatter/abstract}
-%\include{FrontBackMatter/dedication}
-%\include{FrontBackMatter/acknowledgements}
-%\include{FrontBackMatter/declaration}
-%\include{FrontBackMatter/contents}
+\section{Première partie : les données du problème}
 
-%\part{Introduction}
+\subsection{Implémentation des Robots} \\
 
-\chapter{Première partie : les données du problème}
+Comme demandé dans le sujet, la classe robot est abstraite, et possède une architecture particulière, cette architecture est détaillée dans la figure suivante: \\
 
-La première partie du TP, correspond en la réalisation des classes Java représentant le problème et du simulateur. \\
+\includegraphics[scale=0.5]{UML-Robot.jpg} 
 
-Nous avons séparé les entités en quatre packages. \\
+\noindent Nous avons tout d'abord décidé de séparer les robots qui fonctionnait avec un réservoir à eau et le robot à pattes qui lui fonctionne avec de la poudre et qui possède un reservoir considéré comme infini. Cette séparation nous permet de factoriser plusieurs méthodes liées à la gestion de l'eau du robot. La classe \textbf{RobotReservoir} est abstraite : elle permet simplement d'éviter la redondance de code. \\
+Ensuite nous avons séparé \textbf{RobotReservoir} en deux classes: la classe drone, qui implémente donc un drone et qui est donc finale, et une autre classe abstraite \textbf{RobotTerrestre} qui permet de factoriserle code qui gère le remplissage des robots (les tobots à roues et à chenilles se remplissent de la même manière). Enfin les classes \textbf{RobotsAChenilles} et \textbf{RobotARoues} implémentent la classe \textbf{RobotTerrestre}, et sont bien sur finales. 
 
-\begin{tabular}{|c|c|}
-	\hline Package & Robot \\
-	\hline \hline 
-	classes & Drone \\
-			& Robot \\
-			& RobotAChenilles \\
-			& RobotAPattes \\
-			& RobotAroues \\
-			& RobotReservoir \\
-			& RobotTerrestre \\
-	\hline \hline
-	Package & Géographie \\
-	\hline \hline
-	classes & Carte \\
-			& Case \\
-			& EnumDirection \\
-			& EnumNatureTerrain \\
-			& Incendie \\
-	\hline \hline
-	Package & Simulation \\
-	\hline \hline
-	classes & DonneesSimulation \\
-			& Simulateur \\
-	\hline \hline
-	Package & io \\
-	\hline \hline
-	classes & LecteurDonnees \\
-	\hline
-\end{tabular} \\
+\subsection{Implémentation de l'interface graphique} 
 
-\section{Package Robot}
-Le package Robot contient la classe abstraite Robot ainsi que toutes les classes l'implémentant. \\ 
+La classe \textbf{Simulateur} implémente l'interface graphique, comme expliqué dans l'énoncé, cette dernière implémente l'interface \textbf{Simulable}. Les principaux attributs de cette classe sont la GUI \textbf{gui}, les données de la simulation \textbf{donnees} (carte, robots, incendies) ainsi que la liste d'evnement que nous détaillerons dans les parties ultérieures. Cette classe affiche la carte et la met à jour à chaque évenement.
 
-Nous avons cherché à optimiser l'implémentation des sous-classes de Robot en factorisant le plus possible. \\ 
+\section{Deuxième Partie : simulation de scénario}
 
-%Les classes Drone, RobotAChenilles et RobotAroues ont la particularité d'avoir un réservoir contrairement à RobotAPattes. Nous les avons donc leurs points communs dans une classe abstraire RobotReservoir fille de Robot. \\
+\subsection{Gestionnaire d'évènements discret}
 
-%RobotAChenilles et RobotAroues sont différend de Drone, Ils ont une diminution de la vitesse en rapport à la Case où ils se situent et ne vident pas leur réservoir de la même façon de Drone. Nous avons regroupé leurs points communs dans une sous-classe abstraire RobotTerrestre fille de RobotReservoir. \\
+Ici peu de libertés ont été prises par rapport à l'énoncé : la date courante est représenté par un entier et incrémentée de 1 à chaque "pas" temporel. Le fonctionnement est très proche de ce qui est détaillé en annexe. 
 
-Le diagramme UML correspondant du package Robot est le suivant \\
+\subsection{Evenements} 
 
-\includegraphics[scale=0.5]{./UML-Robot.jpg}
+Tout comme pour les robots la classe Evenement est abstraite, nous avons implémenté trois types d'évenements 
+\begin{itemize}
+    \item \textbf{EvenementDeplacementRobot} : a pour attribut supplémentaire une direction, il déplace le robot dans la direction donnée.  
+    \item \textbf{EvenementDeverserEau} : a pour attribut spécifique l'incendie sur lequel deverser l'eau et l'index de l'incendie dans la liste des incendies, il indique au robot qu'il doit deverser de l'eau sur un incendie, si le robot a assez d'eau pour éteindre l'incendie, il ne met que la quantité d'eau correspondant à l'intensité de l'incendie. SI le robot n'a pas assez d'eau, il vide complétement son réservoir, mais l'incendie ne sera pas complétement éteint.
+    \item \textbf{EvenementRemplir} : remplit le robot, si la case n'est pas valide (drone qui ne se situe pas sur une case d'eau par exemple), renvoit une exception. 
+\end{itemize}
+
+\section{Trosième Partie : calculs de plus court chemins}
+
+\subsection{Structure de l'implémentation de la partie 3}
+
+Le calcul du plus court chemin est délégué à la classe Chemin, qui a pour attributs une liste d'évenements qui correspondent aux déplacement élementaires (dans une des 4 directions) qui déterminent le chemin vers la destinantion voulue. La classe Chemin a aussi pour attribut une date, qui correspond à la date de début du chemin.
+
+\subsection{Choix de l'algorithme}
+
+Nous avons ici opté pour l'algorithme de Djikstra, permettant de calculer le plus court chemin vers la destination. 
+
+\section{Dernière Partie : résolution du problème}
+
+Nous avons opté pour la stratégie élémentaire. Il s'agit de parcourir dans 2 boucles imbriqués les incendies qui sont sur la carte, et de parcourir pour chaque incendie la liste des robots pour voir lequel est disponible
 
 
-\section{Autres Packages}
-Il n'y a pas vraiment de choix de conception à faire pour les autres packages, la partie 1 est très guidée. 
-
-
-\chapter{Troisième partie : le plus court chemin}
-Pour trouver le plus court chemin, notre algorithme commence par initialiser la distance entre le robot et l'incendie par une valeur maximale. \\
-
-Ensuite, il teste dans une boucle sur les cases accessibles laquelle est la plus proche. Si elle permet de diminuer la distance entre le robot et la destination alors on met la nouvelle distance dans la variable dist et on continue. \\
-
-Dans le cas où la variable 'dist' n'a pas changer de valeur, celà indique que le robot ne trouve jamais une case où il peut se déplacer. On affiche alors le message indiquant que le robot est bloqué.
-
-
-
-\chapter{Quatrième partie : Stratégie d'intervention}
-On a opté pour la stratégie élémentaire. Il s'agit de parcourir dans 2 boucles imbriqués les incendies qui sont sur la carte, et de parcourir pour chaque incendie la liste des robots pour voir lequel est disponible
 \end{document}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
