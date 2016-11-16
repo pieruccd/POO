@@ -19,11 +19,29 @@ public class ChefPompier {
     private ArrayList<Robot> robots;
     private Carte map;
     private ArrayList<Evenement> cheminall;
+    int dateCour;
+
+    public void setCheminall(ArrayList<Evenement> cheminall) {
+        this.cheminall = cheminall;
+    }
+
+    public void setDatecour(int datecour) {
+        this.dateCour = datecour;
+    }
+
+    public int getDatecour() {
+        return dateCour;
+    }
     
-    public ChefPompier(ArrayList<Incendie> incendies, ArrayList<Robot> robots, Carte map) {
+    public ChefPompier(ArrayList<Incendie> incendies, ArrayList<Robot> robots, Carte map, int dateDebut) {
+        this.dateCour = dateDebut;
         this.map = map;
         this.robots = robots;
         this.incendies = incendies;
+    }
+
+    public ArrayList<Evenement> getCheminall() {
+        return cheminall;
     }
 
     public ArrayList<Incendie> getIncendies() {
@@ -63,6 +81,9 @@ public class ChefPompier {
                        rob.setBusy(true);
                        if (rob.getEauReservoir() > 0) {           
                             this.cheminall.addAll(chemin.getChemin());
+                            this.dateCour = chemin.getDateDebut();
+                            this.cheminall.add(new EvenementDeverserEau(this.dateCour, inc, rob, incendies.indexOf(inc), robots.indexOf(rob)));
+                            this.dateCour ++;
                        }
                     
                    }
