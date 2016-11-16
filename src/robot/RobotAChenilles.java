@@ -66,5 +66,17 @@ public final class RobotAChenilles extends RobotTerrestre {
             }
         }
     }
+    
+    public double tempsnecessaire(Case voisin, Carte map) {
+        if (voisin.getNature() == EnumNatureTerrain.FORET) {
+            return ((this.getVitesse()*(this.getVitesse()/2))/2)*map.getTailleCases()*2;
+        } else if ((voisin.getNature() == EnumNatureTerrain.EAU)) {
+            return Double.MAX_VALUE;
+        } else if (voisin.getNature() == EnumNatureTerrain.ROCHE) {
+            return Double.MAX_VALUE;
+        } else {
+            return ((this.getVitesse()*this.getVitesse())/2)*map.getTailleCases()*2;
+        }
+    }
 
 }

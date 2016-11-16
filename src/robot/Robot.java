@@ -53,6 +53,8 @@ abstract public class Robot {
         this.carte = carte;
     }
     
+    abstract public double tempsnecessaire(Case voisin, Carte map);
+    
     abstract public Robot copy();
 
     @Override

@@ -6,10 +6,13 @@ import simulation.*;
 
 public class Chemin {
 
+
     private int dateDebut;
     private ArrayList<Evenement> chemin;
-
-    public Chemin(int dateDebut) {
+    private DonneesSimulation donnees; 
+    
+    public Chemin(int dateDebut, DonneesSimulation donnees) {
+        this.donnees = donnees;
         this.dateDebut = dateDebut;
         this.chemin = new ArrayList<>(0);
     }
@@ -67,5 +70,65 @@ public class Chemin {
             this.chemin.add(cheminElementaire);
         }
     }
+    
+    public void Dijkstra(Robot robot, Case depart, Case destination, int indexRobot) {
+        ArrayList<Case> Q = new ArrayList<Case>();
+        double distance[][] = new double[donnees.getCarte().getNbLignes()][donnees.getCarte().getNbColonnes()];
+        Case prec[][] = new Case[donnees.getCarte().getNbLignes()][donnees.getCarte().getNbColonnes()];
+        //CreerRobotCourt
+        if (robot.getClass() == RobotAChenille) {
+            
+        }
+        double alt = 0; // Variable sauvegarde
+        
+        for (int i = 0; i < donnees.getCarte().getNbLignes(); i ++) {
+            for (int j = 0; j < donnees.getCarte().getNbColonnes(); j++) {
+                distance[i][j] = Double.MAX_VALUE;
+                prec[i][j] = new Case(-1,-1);
+                Q.add(donnees.getCarte().getCase(i, j));
+            }
+        }
 
+        distance[depart.getLigne()][depart.getColonne()] = 0;        
+        Case voisin;
+        //Tant que Q n'est pas vide
+        while(!Q.isEmpty()) {
+            Case u = Chemin.mindist(Q, distance);
+            // Je dois placer robotCour là
+            //Pour chaque voisin de u (donc 4 voisins)
+            for (EnumDirection dir : EnumDirection.values()) {
+                voisin = donnees.getCarte().getVoisin(u, dir);
+                if (voisin != null) {
+                    alt = distance[u.getLigne()][u.getLigne()] + robotCour.tempsnecessaire(voisin, donnees.getCarte());
+                    if (alt < distance[voisin.getLigne()][voisin.getColonne()]) {
+                        distance[voisin.getLigne()][voisin.getColonne()] = alt;
+                        prec[voisin.getLigne()][voisin.getColonne()] = u;
+                    }
+                }
+            }
+        }
+    }
+    
+    public static Case mindist(ArrayList<Case> Q, double distance[][]) {
+        double minimum = Double.MAX_VALUE;
+        Case caseMin = new Case(0,0);
+        for (Case q : Q) {
+           if (distance[q.getLigne()][q.getColonne()] < minimum) {
+               minimum = distance[q.getLigne()][q.getColonne()];
+               caseMin = q;
+           }
+        }
+        return caseMin;
+    }
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

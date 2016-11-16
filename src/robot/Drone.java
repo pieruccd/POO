@@ -42,6 +42,10 @@ public final class Drone extends RobotReservoir {
             throw new IllegalArgumentException("Vitesse impossible (out of range)");
         }
     }
+    
+    public double tempsnecessaire(Case voisin, Carte map) {
+        return this.getVitesse()*map.getTailleCases();
+    }
 
     @Override
     public Drone copy() {
