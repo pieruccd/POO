@@ -60,6 +60,13 @@ public final class RobotARoues extends RobotTerrestre {
         }
     }
 
+    public double tempsnecessaire(Case voisin, Carte map) {
+        if (voisin.getNature() == EnumNatureTerrain.TERRAIN_LIBRE || voisin.getNature() == EnumNatureTerrain.HABITAT) {
+            return this.getVitesse()*map.getTailleCases();
+        } else {
+            return Double.MAX_VALUE;
+        }
+    }
     @Override
     public Robot copy() {
         return new RobotARoues(this);

@@ -64,4 +64,13 @@ public final class RobotAPattes extends Robot {
         }
     }
 
+    public double tempsnecessaire(Case voisin, Carte map) {
+        if (voisin.getNature() == EnumNatureTerrain.ROCHE) {
+            return ((this.getVitesse()*10)/2)*map.getTailleCases()*2;
+        } else if (voisin.getNature() == EnumNatureTerrain.EAU){
+            return Double.MAX_VALUE;
+        } else {
+          return ((this.getVitesse()*30)/2)*map.getTailleCases()*2;
+        }
+    }
 }
