@@ -4,6 +4,7 @@ import simulation.*;
 import gui.*;
 import java.awt.Color;
 import java.util.ArrayList;
+import Strategie.*;
 
 public class TestSimulateur {
 
