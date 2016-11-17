@@ -84,6 +84,7 @@ public class TestPartie1 {
         System.out.println("\n" + "TEST INCENDIE" + "\n");
         Incendie testIncendie = new Incendie(testCase, 100);
         System.out.println(testIncendie.getPos());
+
         Incendie testIncendieClone = testIncendie.clone();
         System.out.println("Incendie : " + testIncendie);
         System.out.println("Incendie Clone :" + testIncendieClone);
