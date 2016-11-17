@@ -3,16 +3,23 @@ import Evenement.*;
 import java.util.ArrayList;
 import robot.*;
 import simulation.*;
+import Dijkstra.*;
+import java.util.List;
+import java.util.LinkedList;
 
 public class Chemin {
 
-
     private int dateDebut;
     private ArrayList<Evenement> chemin;
-    private DonneesSimulation donnees; 
-    
+    private DonneesSimulation donnees;
+
     public Chemin(int dateDebut, DonneesSimulation donnees) {
         this.donnees = donnees;
+        this.dateDebut = dateDebut;
+        this.chemin = new ArrayList<>(0);
+    }
+
+    public Chemin(int dateDebut) {
         this.dateDebut = dateDebut;
         this.chemin = new ArrayList<>(0);
     }
@@ -42,16 +49,53 @@ public class Chemin {
     }
 
     public void calculerChemin(Robot robot, Case depart, Case destination, int indexRobot) {
-        /* Algorithme glouton */
-        int dateCour = dateDebut;
+        System.err.println(robot.getClass());
+        ArrayList<Vertex> cases = new ArrayList<Vertex>(0);
+        ArrayList<Edge> arcs = new ArrayList<>(0);
+        LinkedList<Vertex> chemin = new LinkedList<>();
+        Vertex cour;
+        //int VoisinPos;
+        int n = donnees.getCarte().getNbColonnes();
+        for (int j = 0; j < donnees.getCarte().getNbLignes(); j++) {
+            for (int i = 0; i < donnees.getCarte().getNbColonnes(); i++) {
+                cases.add(new Vertex(Integer.toString(i + j * n), Integer.toString(i + j * n)));
+            }
+        }
+        for (int j = 0; j < donnees.getCarte().getNbLignes(); j++) {
+            for (int i = 0; i < donnees.getCarte().getNbColonnes(); i++) {
+                for (EnumDirection dir : EnumDirection.values()) {
+                    if (robot.deplacementPossible(dir)/*donnees.getCarte().voisinExiste(donnees.getCarte().getCase(j, i), dir)*/) {
+                        cour = cases.get(i+j*n);
+                        int VoisinPos = donnees.getCarte().getVoisin(donnees.getCarte().getCase(j, i), dir).getColonne() +
+                                n * donnees.getCarte().getVoisin(donnees.getCarte().getCase(j, i), dir).getLigne();
+                        arcs.add(new Edge("ID", cour, cases.get(VoisinPos), 1));
+                    }
+                }
+            }
+        }
+        Graph graph = new Graph(cases, arcs);
+        DijkstraAlgorithm algo = new DijkstraAlgorithm(graph);
+        algo.execute(cases.get(depart.getColonne() + depart.getLigne()*n));
+        chemin = algo.getPath(cases.get(destination.getColonne() + destination.getLigne()*n));
+        for (int i=0; i<chemin.size(); i++) {
+            System.out.println(chemin.get(i).getId());
+        }
+        
+        /*for (int i=0; i<cases.size(); i++) {
+            System.out.println(cases.get(i).getName());
+        }*/
+        
+    }
+    /* Algorithme glouton */
+ /* int dateCour = dateDebut;
         double dist;
         EnumDirection dirCour = EnumDirection.NORD;
         Robot robotCour = robot.copy();
-        robotCour.setPosition(depart.getLigne(),depart.getColonne());
+        robotCour.setPosition(depart.getLigne(), depart.getColonne());
         System.out.println("CALCUL ...");
         System.out.println("Incendie ligne : " + destination.getLigne() + " Incendie colonne : " + destination.getColonne());
-        Case prec = new Case(0,0);
-                System.out.println("Index Robot fdp :" + indexRobot);        
+        Case prec = new Case(0, 0);
+        System.out.println("Index Robot fdp :" + indexRobot);
         while ((robotCour.getPostion().getLigne() != destination.getLigne() || robotCour.getColonne() != destination.getColonne())) {
             dist = Double.MAX_VALUE;
             for (EnumDirection dir : EnumDirection.values()) {
@@ -64,13 +108,13 @@ public class Chemin {
                 }
 
                 if (dist == Double.MAX_VALUE) {
-                    System.out.println("Le robot est bloqué !"); 
+                    System.out.println("Le robot est bloqué !");
                     return;
                 }
-            }
+            }*/
 
-            /* On choisit le meilleur chemin local */
-            dateCour++;
+ /* On choisit le meilleur chemin local */
+ /*dateCour++;
             prec = robotCour.getPostion();
             robotCour.deplacer(dirCour);
             EvenementDeplacementRobot cheminElementaire = new EvenementDeplacementRobot(dateCour, robot, dirCour, indexRobot);
@@ -78,9 +122,9 @@ public class Chemin {
             this.dateDebut = dateCour;
         }
         System.out.println("Fin While");
-    }
-    
-    public void Dijkstra(Robot robot, Case depart, Case destination, int indexRobot) {
+    }*/
+
+ /*public void Dijkstra(Robot robot, Case depart, Case destination, int indexRobot) {
         ArrayList<Case> Q = new ArrayList<Case>();
         double distance[][] = new double[donnees.getCarte().getNbLignes()][donnees.getCarte().getNbColonnes()];
         Case prec[][] = new Case[donnees.getCarte().getNbLignes()][donnees.getCarte().getNbColonnes()];
@@ -116,28 +160,16 @@ public class Chemin {
                 }
             }
         }
-    }
-    
-    public static Case mindist(ArrayList<Case> Q, double distance[][]) {
+    }*/
+ /*public static Case mindist(ArrayList<Case> Q, double distance[][]) {
         double minimum = Double.MAX_VALUE;
-        Case caseMin = new Case(0,0);
+        Case caseMin = new Case(0, 0);
         for (Case q : Q) {
-           if (distance[q.getLigne()][q.getColonne()] < minimum) {
-               minimum = distance[q.getLigne()][q.getColonne()];
-               caseMin = q;
-           }
+            if (distance[q.getLigne()][q.getColonne()] < minimum) {
+                minimum = distance[q.getLigne()][q.getColonne()];
+                caseMin = q;
+            }
         }
         return caseMin;
-    }
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    }*/
 }

@@ -38,17 +38,17 @@ public class TestSimulateur {
         listeEvenements.add(testEvenement8);
 
         /* Ajoute le chemin pour le robot 0 vers la case (7,7) */
-        Chemin cheminTo77 = new Chemin(9);
+        Chemin cheminTo77 = new Chemin(9,testDonneesSimulation);
         cheminTo77.calculerChemin(testDonneesSimulation.getRobots().get(0), testDonneesSimulation.getRobots().get(0).getPostion(), testDonneesSimulation.getCarte().getCase(7, 7), 0);
         listeEvenements.addAll(cheminTo77.getChemin());
 
         /* Ajoute le chemin pour le robot 0 vers la case (1,1) */
-        Chemin cheminto11 = new Chemin(listeEvenements.get(listeEvenements.size() - 1).date + 1);
+        Chemin cheminto11 = new Chemin(listeEvenements.get(listeEvenements.size() - 1).date + 1,testDonneesSimulation);
         cheminto11.calculerChemin(testDonneesSimulation.getRobots().get(0), testDonneesSimulation.getCarte().getCase(7, 7), testDonneesSimulation.getCarte().getCase(1, 1), 0);
         listeEvenements.addAll(cheminto11.getChemin());
 
         /* Ajoute le chemin pour le robot 0 vers la case (7,0) */
-        Chemin cheminto70 = new Chemin(listeEvenements.get(listeEvenements.size() - 1).date + 1);
+        Chemin cheminto70 = new Chemin(listeEvenements.get(listeEvenements.size() - 1).date + 1,testDonneesSimulation);
         cheminto70.calculerChemin(testDonneesSimulation.getRobots().get(0), testDonneesSimulation.getCarte().getCase(1, 1), testDonneesSimulation.getCarte().getCase(7, 0), 0);
         listeEvenements.addAll(cheminto70.getChemin());
 
