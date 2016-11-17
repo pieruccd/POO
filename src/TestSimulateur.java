@@ -16,9 +16,11 @@ public class TestSimulateur {
         /*On charge les données de la simulation*/
         DonneesSimulation testDonneesSimulation = new DonneesSimulation("./cartes" + "/" + "carteSujet.map");
         
+        /*Initialisation du chef pompier et calcul des Evenements de la stratégie */
         ChefPompier testChefPompier = new ChefPompier(testDonneesSimulation, 0);
         testChefPompier.strategieelementaire();
         
+        /*Lancement du simulateur*/
         Simulateur simulateur = new Simulateur(gui, testDonneesSimulation, testChefPompier.getEvenementsTotaux());
     }
 
