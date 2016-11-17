@@ -11,7 +11,7 @@ abstract public class Robot {
     protected double vitesse;
     protected Carte carte;
     protected int quantitéEau;
-    protected boolean busy;
+    protected boolean busy = false;
 
     public void setBusy(boolean busy) {
         this.busy = busy;
@@ -51,6 +51,8 @@ abstract public class Robot {
     }
     
     abstract public boolean deplacementPossible(EnumDirection dir);
+    
+    abstract public boolean positionPossible(int lig, int col);
 
     public abstract void setPosition(int lig, int col);
 

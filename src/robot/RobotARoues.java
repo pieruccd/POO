@@ -30,14 +30,20 @@ public final class RobotARoues extends RobotTerrestre {
 
     @Override
     public boolean deplacementPossible(EnumDirection dir) {
-        Case voisin = this.carte.getVoisin(this.carte.getCase(ligne, colonne), dir);
-
-        if (voisin == null) {
+        if (!this.carte.voisinExiste(this.carte.getCase(ligne, colonne), dir)) {
             return false;
         }
+        Case voisin = this.carte.getVoisin(this.carte.getCase(ligne, colonne), dir);
         return (this.carte.getCase(voisin.getLigne(), voisin.getColonne()).getNature() == EnumNatureTerrain.TERRAIN_LIBRE 
-                || this.carte.getCase(voisin.getLigne(), voisin.getColonne()).getNature() == EnumNatureTerrain.HABITAT)
-                && (this.carte.voisinExiste(this.getPostion(), dir));
+                || (this.carte.getCase(voisin.getLigne(), voisin.getColonne()).getNature() == EnumNatureTerrain.HABITAT));
+    }
+
+    @Override
+    public boolean positionPossible(int lig, int col) {
+                return ((lig<carte.getNbLignes()) && (lig>=0) && (col<carte.getNbColonnes()) && (col>=0) 
+                && (this.getCarte().getCase(lig, col).getNature() != EnumNatureTerrain.EAU)
+                && (this.getCarte().getCase(lig, col).getNature() != EnumNatureTerrain.ROCHE)
+                && (this.getCarte().getCase(lig, col).getNature() != EnumNatureTerrain.FORET));
     }
 
     @Override

@@ -58,6 +58,11 @@ public final class Drone extends RobotReservoir {
     }
 
     @Override
+    public boolean positionPossible(int lig, int col) {
+        return ((lig<carte.getNbLignes()) && (lig>=0) && (col<carte.getNbColonnes()) && (col>=0) );
+    }
+
+    @Override
     public void remplirReservoir() {
         if (this.getPostion().getNature() == EnumNatureTerrain.EAU) {
             this.quantitéEau = this.volumeReservoir;

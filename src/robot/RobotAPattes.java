@@ -8,7 +8,7 @@ public final class RobotAPattes extends Robot {
         this.carte = carte;
         this.setPostion(pos);
     }
-    
+
     public RobotAPattes(RobotAPattes robot) {
         this.carte = new Carte(robot.carte);
         this.setPosition(robot.ligne, robot.colonne);
@@ -41,12 +41,17 @@ public final class RobotAPattes extends Robot {
 
     @Override
     public boolean deplacementPossible(EnumDirection dir) {
-        Case voisin = this.carte.getVoisin(this.carte.getCase(ligne, colonne), dir);
-        if (voisin == null) {
+        if (!this.carte.voisinExiste(this.carte.getCase(ligne, colonne), dir)) {
             return false;
         }
-        return this.carte.getCase(voisin.getLigne(), voisin.getColonne()).getNature() != EnumNatureTerrain.EAU
-                && this.carte.voisinExiste(this.getPostion(), dir);
+        Case voisin = this.carte.getVoisin(this.carte.getCase(ligne, colonne), dir);
+        return this.carte.getCase(voisin.getLigne(), voisin.getColonne()).getNature() != EnumNatureTerrain.EAU;
+    }
+
+    @Override
+    public boolean positionPossible(int lig, int col) {
+        return ((lig < carte.getNbLignes()) && (lig >= 0) && (col < carte.getNbColonnes()) && (col >= 0)
+                && (this.getCarte().getCase(lig, col).getNature() != EnumNatureTerrain.EAU));
     }
 
     @Override
@@ -66,11 +71,11 @@ public final class RobotAPattes extends Robot {
 
     public double tempsnecessaire(Case voisin, Carte map) {
         if (voisin.getNature() == EnumNatureTerrain.ROCHE) {
-            return ((this.getVitesse()*10)/2)*map.getTailleCases()*2;
-        } else if (voisin.getNature() == EnumNatureTerrain.EAU){
+            return ((this.getVitesse() * 10) / 2) * map.getTailleCases() * 2;
+        } else if (voisin.getNature() == EnumNatureTerrain.EAU) {
             return Double.MAX_VALUE;
         } else {
-          return ((this.getVitesse()*30)/2)*map.getTailleCases()*2;
+            return ((this.getVitesse() * 30) / 2) * map.getTailleCases() * 2;
         }
     }
 }

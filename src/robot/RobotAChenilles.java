@@ -34,11 +34,21 @@ public final class RobotAChenilles extends RobotTerrestre {
 
     @Override
     public boolean deplacementPossible(EnumDirection dir) {
+        if (!(this.carte.voisinExiste(this.carte.getCase(ligne, colonne), dir))) {
+            return false;
+        }
         Case voisin = this.carte.getVoisin(this.carte.getCase(ligne, colonne), dir);
         return (voisin.getNature() != EnumNatureTerrain.EAU) 
-                && (voisin.getNature() != EnumNatureTerrain.ROCHE)
-                && this.carte.voisinExiste(voisin, dir);
+                && (voisin.getNature() != EnumNatureTerrain.ROCHE);
     }
+
+    @Override
+    public boolean positionPossible(int lig, int col) {
+        return ((lig<carte.getNbLignes()) && (lig>=0) && (col<carte.getNbColonnes()) && (col>=0) 
+                && (this.getCarte().getCase(lig, col).getNature() != EnumNatureTerrain.EAU)
+                && (this.getCarte().getCase(lig, col).getNature() != EnumNatureTerrain.ROCHE));
+    }
+    
 
     @Override
     public void setPosition(int lig, int col) {
@@ -49,6 +59,8 @@ public final class RobotAChenilles extends RobotTerrestre {
         } else if (this.carte.getCase(lig, col).getNature() != EnumNatureTerrain.FORET && this.getPostion().getNature() == EnumNatureTerrain.FORET) {
             this.vitesse = this.vitesse * 2;
         }
+        this.ligne = lig;
+        this.colonne = col;
     }
 
     public void setVitesse(double vitesse) {
@@ -58,13 +70,7 @@ public final class RobotAChenilles extends RobotTerrestre {
             } else {
                 this.vitesse = vitesse;
             }
-        } else if (this.getPostion().getNature() == EnumNatureTerrain.FORET) {
-            if (vitesse < 0 || vitesse > 40) {
-                throw new IllegalArgumentException("Vitesse invalide pour un robot à chenilles sur de la forêt ! (Demandé : " + vitesse + " )");
-            } else {
-                this.vitesse = vitesse;
-            }
-        }
+        } 
     }
     
     public double tempsnecessaire(Case voisin, Carte map) {

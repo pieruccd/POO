@@ -26,7 +26,7 @@ public class EvenementDeverserEau extends Evenement {
 
     @Override
     public void execute() {
-        if (incendie.getCase().equals(robot.getPostion())) {
+        if (incendie.getPos().equals(robot.getPostion())) {
             System.out.println("Incendie : " + incendie.getNbLitres());
             System.out.println("Robot : " + robot.getEauReservoir());
             System.out.println("On a versé : " + Math.min(robot.getEauReservoir(), incendie.getNbLitres()));
