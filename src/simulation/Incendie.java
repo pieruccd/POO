@@ -6,18 +6,33 @@ public class Incendie implements Cloneable {
 
     private Case pos;
     private int nbLitres;
+    private boolean affecte = false;
 
     public Incendie(Case Case, int nbLitres) {
         this.pos = Case;
         this.nbLitres = nbLitres;
+        this.affecte = false;
     }
     
     public Incendie(Incendie inc) {
         this.nbLitres = inc.nbLitres;
         this.pos = inc.pos.clone();
+        this.affecte = inc.affecte;
     }
 
-    public Case getCase() {
+    public boolean isAffecte() {
+        return affecte;
+    }
+    
+    public boolean estEteint() {
+        return nbLitres == 0;
+    }
+
+    public void setAffecte(boolean affecte) {
+        this.affecte = affecte;
+    }
+
+    public Case getPos() {
         return pos;
     }
 

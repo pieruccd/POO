@@ -10,7 +10,7 @@ public final class Simulateur implements Simulable {
     private final GUISimulator gui;
     private DonneesSimulation donnees;
     private final DonneesSimulation donnesInitiales;
-    private final int tailleCase = 80; // Uniquement Graphique, n'a rien avoir avec la taille des cases dans Carte
+    private final int tailleCase = 100; // Uniquement Graphique, n'a rien avoir avec la taille des cases dans Carte
     private int dateSimulation = 0; // Par défaut on se met à la date 0
     private final ArrayList<Evenement> listeEvenements;
 
@@ -28,13 +28,9 @@ public final class Simulateur implements Simulable {
     }
 
     public void incrementeDate() {
-        System.out.println("On incrémente !");
-        System.out.println("Date Actuelle : " + this.dateSimulation);
-
         for (int i = 0; i < listeEvenements.size(); i++) {
             if (listeEvenements.get(i).date == dateSimulation) {
                 listeEvenements.get(i).execute();
-                System.out.println("MAJ de la carte ...");
                 this.drawMap();
             }
         }
@@ -68,7 +64,6 @@ public final class Simulateur implements Simulable {
         /* Mise a jour de la carte */
         drawMap();
         /* Mise a jour des evenements */
-        System.out.println("Carte remis en configuration initiale");
         for (int i = 0; i < listeEvenements.size(); i++) {
             listeEvenements.get(i).setRobot(donnees.getRobots().get(listeEvenements.get(i).getIndexRobot()));
             if (listeEvenements.get(i) instanceof EvenementDeverserEau) {
@@ -78,8 +73,6 @@ public final class Simulateur implements Simulable {
     }
 
     public void drawMap() {
-        //gui.reset();
-        //gui.setSize(tailleCase * donnees.getCarte().getNbColonnes(), tailleCase * donnees.getCarte().getNbLignes());
 
         int xOffset = tailleCase / 2;
         int yOffset = tailleCase / 2;
@@ -117,8 +110,8 @@ public final class Simulateur implements Simulable {
 
         for (int i = 0; i < donnees.getIncendies().size(); i++) {
             if (donnees.getIncendies().get(i).getNbLitres() != 0) {
-                gui.addGraphicalElement(new Text(donnees.getIncendies().get(i).getCase().getColonne() * tailleCase + xOffset,
-                        donnees.getIncendies().get(i).getCase().getLigne() * tailleCase + 20 + yOffset, Color.RED, "I ="
+                gui.addGraphicalElement(new Text(donnees.getIncendies().get(i).getPos().getColonne() * tailleCase + xOffset,
+                        donnees.getIncendies().get(i).getPos().getLigne() * tailleCase + 20 + yOffset, Color.RED, "I ="
                         + donnees.getIncendies().get(i).getNbLitres()));
             }
         }

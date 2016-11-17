@@ -86,7 +86,7 @@ public class Carte implements Cloneable {
                     return (this.getCase(src.getLigne() + 1, src.getColonne()));
             }
         } else {
-            return null;
+            throw new IllegalArgumentException("La case n'a pas de voisin !");
         }
         return null;
     }
